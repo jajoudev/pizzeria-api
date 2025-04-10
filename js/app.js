@@ -41,10 +41,9 @@ async function getPizzaProduct() {
     $addToCartBtn.addEventListener("click", (event) => {
       const pizzaCard = event.target.closest(".pizza-item");
       const quantityBtn = document.createElement("span");
-
       quantityBtn.classList.add("quantity-btn");
 
-      quantity = 1;
+      quantity += 1; // Initialiser la quantité à 1 lors de l'ajout au panier
 
       // Masquer le bouton "Ajouter au panier"
       $addToCartBtn.classList.add("hidden");
@@ -61,31 +60,20 @@ async function getPizzaProduct() {
       pizzaCard.appendChild(quantityBtn);
 
       displayBasket();
-      addProductToBasket(product.name, product.price, quantity);
+      addProductToBasket(product.name, product.price, quantity, pizzaCard);
     });
 
     // Ajoute de la quantité
     addQuantityIcon.addEventListener("click", () => {
-      console.log("Ma quantité: ", quantity);
-      console.log("J'ai:", currentBasketNumber, " produits dans mon panier");
+      quantity++; // Incrémente la quantité pour ce produit
 
-      const basketProductDetailsQuantity = document.querySelector(
-        ".basket-product-details-quantity"
-      );
-      console.log(basketProductDetailsQuantity);
-
-      const basketProductDetailsTotalPrice = document.querySelector(
-        ".basket-product-details-total-price"
-      );
-
-      basketProductDetailsQuantity.textContent = `${quantity}x`;
-
-      basketProductDetailsTotalPrice.textContent = `$${(
+      // Mettre à jour la quantité et le prix dans le panier
+      pizzaCard.basketProductDetailsQuantity.textContent = `${quantity}x`;
+      pizzaCard.basketProductDetailsTotalPrice.textContent = `$${(
         product.price * quantity
       ).toFixed(2)}`;
 
-      quantity++;
-
+      // Mettre à jour le prix total global
       const currentTotal = parseFloat(
         $totalOrderPrice.textContent.replace("$", "")
       );
@@ -96,49 +84,31 @@ async function getPizzaProduct() {
       $basketNumber.textContent = `(${currentBasketNumber})`;
 
       pizzaNumberQuantity.textContent = quantity;
-
-      // addProductToBasket(product.name, product.price, quantity);
     });
 
     // Enlève de la quantité
     removeQuantityIcon.addEventListener("click", () => {
       if (quantity > 0) {
-        const basketProductDetailsQuantity = document.querySelector(
-          ".basket-product-details-quantity"
-        );
-        console.log(basketProductDetailsQuantity);
+        quantity--; // Décrémente la quantité pour ce produit
 
-        const basketProductDetailsTotalPrice = document.querySelector(
-          ".basket-product-details-total-price"
-        );
-        quantity--;
-        currentBasketNumber--;
+        // Mettre à jour la quantité et le prix dans le panier
+        pizzaCard.basketProductDetailsQuantity.textContent = `${quantity}x`;
+        pizzaCard.basketProductDetailsTotalPrice.textContent = `$${(
+          product.price * quantity
+        ).toFixed(2)}`;
 
-        pizzaNumberQuantity.textContent = quantity;
+        // Mettre à jour le prix total global
         const currentTotal = parseFloat(
           $totalOrderPrice.textContent.replace("$", "")
         );
         const newTotal = currentTotal - parseFloat(product.price);
         $totalOrderPrice.textContent = `$${newTotal.toFixed(2)}`;
 
+        currentBasketNumber--;
         $basketNumber.textContent = `(${currentBasketNumber})`;
 
-        basketProductDetailsQuantity.textContent = `${quantity}x`;
-
-        basketProductDetailsTotalPrice.textContent = `$${(
-          product.price * quantity
-        ).toFixed(2)}`;
-        // addProductToBasket(product.name, product.price, quantity);
+        pizzaNumberQuantity.textContent = quantity;
       }
-
-      // if (quantity === 0) {
-      //   const quantityBtn = pizzaCard.querySelector(".quantity-btn");
-      //   const basketProductItem = document.querySelector('.basket-product-item')
-
-      //   $addToCartBtn.classList.remove("hidden");
-      //   quantityBtn.classList.add("hidden");
-      //   basketProductItem.remove()
-      // }
     });
   });
 
@@ -155,6 +125,8 @@ async function createPizzaOrder() {
   })
 
   const data = await res.json()
+
+  console.log(data)
 }
 
 // Affiche les pizzas
@@ -210,10 +182,10 @@ function displayBasket() {
 }
 
 // Affiche les produits qu'on a appuyé dans le panier
-function addProductToBasket(productName, productPrice, quantity) {
+// Ajoute au panier
+function addProductToBasket(productName, productPrice, quantity, pizzaCard) {
   const basketProductItem = document.createElement("li");
   basketProductItem.classList.add("basket-product-item");
-
 
   const basketProductItemName = document.createElement("span");
   basketProductItemName.classList.add("basket-product-item-name");
@@ -241,6 +213,10 @@ function addProductToBasket(productName, productPrice, quantity) {
   basketProductItem.appendChild(basketProductDetails);
 
   basketProducts.appendChild(basketProductItem);
+
+  // Ajouter une référence pour chaque produit
+  pizzaCard.basketProductDetailsQuantity = basketProductDetailsQuantity;
+  pizzaCard.basketProductDetailsTotalPrice = basketProductDetailsTotalPrice;
 
   // Mettre à jour le prix total
   const currentTotal = parseFloat(
