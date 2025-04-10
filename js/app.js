@@ -181,7 +181,6 @@ function displayBasket() {
 }
 
 // Affiche les produits qu'on a appuyé dans le panier
-// Ajoute au panier
 function addProductToBasket(productName, productPrice, quantity, pizzaCard) {
   const basketProductItem = document.createElement("li");
   basketProductItem.classList.add("basket-product-item");
@@ -228,6 +227,51 @@ function addProductToBasket(productName, productPrice, quantity, pizzaCard) {
   $basketNumber.textContent = `(${currentBasketNumber})`;
 }
 
+function confirmOrder() {
+  const orderDetail = document.querySelector('ul')
+
+  const orderDetailsProductItem = document.createElement('li')
+  orderDetailsProductItem.classList.add('order-detail-product-item')
+
+  const orderDetailProductImage = document.createElement('img')
+  orderDetailProductImage.classList.add('order-detail-product-image')
+
+  const orderDetailProductName = document.createElement('span')
+  orderDetailProductName.classList.add('order-detail-product-name')
+
+  const orderDetailProductQuantity = document.createElement('span')
+  orderDetailProductQuantity.classList.add('order-detail-product-quantity')
+
+  const orderDetailProductUnitPrice = document.createElement('span')
+  orderDetailProductUnitPrice.classList.add('order-detail-product-unit-price')
+
+  const orderDetailProductTotalPrice = document.createElement('span')
+  orderDetailProductTotalPrice.classList.add('order-detail-product-total-price')
+
+  const orderDetailTotalPrice = document.createElement('li')
+  orderDetailTotalPrice.classList.add('order-detail-total-price')
+
+  const totalOrderTitle = document.createElement('span')
+  totalOrderTitle.classList.add('total-order-title')
+
+  const totalOrderPrice = document.createElement('span')
+  totalOrderPrice.classList.add('total-order-price')
+
+  orderDetailsProductItem.appendChild(orderDetailProductImage)
+  orderDetailsProductItem.appendChild(orderDetailProductName)
+  orderDetailsProductItem.appendChild(orderDetailProductQuantity)
+  orderDetailsProductItem.appendChild(orderDetailProductUnitPrice)
+  orderDetailsProductItem.appendChild(orderDetailProductTotalPrice)
+
+  orderDetailTotalPrice.appendChild(totalOrderTitle)
+  orderDetailTotalPrice.appendChild(totalOrderPrice)
+
+  orderDetail.appendChild(orderDetailTotalPrice)
+  orderDetail.appendChild(orderDetailsProductItem)
+}
+
+confirmOrder()
+
 // Clear le panier
 function resetSlicePizza() {
   $basketProducts.textContent = "";
@@ -235,3 +279,5 @@ function resetSlicePizza() {
 }
 
 getPizzaProduct();
+
+createPizzaOrder()
