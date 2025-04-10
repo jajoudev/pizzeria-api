@@ -43,7 +43,7 @@ body {
 }
 
 .add-to-cart-btn,
-.buttons-group {
+.buttons-group, .quantity-btn {
   align-items: center;
   background-color: var(--white);
   border-radius: 24px;
