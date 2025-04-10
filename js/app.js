@@ -43,7 +43,7 @@ async function getPizzaProduct() {
       const quantityBtn = document.createElement("span");
       quantityBtn.classList.add("quantity-btn");
 
-      quantity += 1; // Initialiser la quantité à 1 lors de l'ajout au panier
+      quantity += 1;
 
       // Masquer le bouton "Ajouter au panier"
       $addToCartBtn.classList.add("hidden");
@@ -89,7 +89,7 @@ async function getPizzaProduct() {
     // Enlève de la quantité
     removeQuantityIcon.addEventListener("click", () => {
       if (quantity > 0) {
-        quantity--; // Décrémente la quantité pour ce produit
+        quantity--;
 
         // Mettre à jour la quantité et le prix dans le panier
         pizzaCard.basketProductDetailsQuantity.textContent = `${quantity}x`;
@@ -97,7 +97,6 @@ async function getPizzaProduct() {
           product.price * quantity
         ).toFixed(2)}`;
 
-        // Mettre à jour le prix total global
         const currentTotal = parseFloat(
           $totalOrderPrice.textContent.replace("$", "")
         );
