@@ -8,6 +8,8 @@ const $basketProducts = document.querySelector(".basket-products");
 
 let currentBasketNumber = 0;
 
+const orders = []
+
 async function getPizzaProduct() {
   const res = await fetch("https://prime-garfish-currently.ngrok-free.app/products", {
     headers: {
@@ -268,11 +270,9 @@ function addProductToBasket(productName, productPrice, quantity, pizzaCard) {
 
   basketProducts.appendChild(basketProductItem);
 
-  // Ajouter une référence pour chaque produit
   pizzaCard.basketProductDetailsQuantity = basketProductDetailsQuantity;
   pizzaCard.basketProductDetailsTotalPrice = basketProductDetailsTotalPrice;
 
-  // Mettre à jour le prix total
   const currentTotal = parseFloat(
     $totalOrderPrice.textContent.replace("$", "")
   );
@@ -289,11 +289,11 @@ function displayOrder(order) {
   console.log(orderDetailList);
   const newOrderBtn = document.querySelector('.new-order-btn')
 
-  let totalPrice = 0; // Variable pour stocker le total de la commande
+  let totalPrice = 0;
 
   // Ajoute chaque produit séparément
   order.products.forEach(item => {
-    const product = item.product; // Accède au sous-objet 'product' contenant les informations du produit
+    const product = item.product;
     const orderDetailsProductItem = document.createElement('li');
     orderDetailsProductItem.classList.add('order-detail-product-item');
 
