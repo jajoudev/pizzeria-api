@@ -8,7 +8,7 @@ const $basketProducts = document.querySelector(".basket-products");
 
 let currentBasketNumber = 0;
 
-const orders = []
+// const orders = []
 
 async function getPizzaProduct() {
   const res = await fetch("https://prime-garfish-currently.ngrok-free.app/products", {
@@ -284,10 +284,15 @@ function addProductToBasket(productName, productPrice, quantity, pizzaCard) {
 }
 
 function displayOrder(order) {
-  const orderModal = document.querySelector('.order-modal')
-  const orderDetailList = document.querySelector('.order-detail');
-  console.log(orderDetailList);
-  const newOrderBtn = document.querySelector('.new-order-btn')
+  const $orderModal = document.querySelector('.order-modal-wrapper')
+  const $confirmOrder = document.querySelector('.confirm-order-btn')
+
+  // const $basketAside = document.querySelector('.basket-aside')
+  // const $emptyBasketAside = document.querySelector('.empty-basket-aside')
+
+  const $orderDetailList = document.querySelector('.order-detail');
+  // console.log(orderDetailList);
+  const $newOrderBtn = document.querySelector('.new-order-btn')
 
   let totalPrice = 0;
 
@@ -327,7 +332,7 @@ function displayOrder(order) {
     orderDetailsProductItem.appendChild(orderDetailProductUnitPrice);
     orderDetailsProductItem.appendChild(orderDetailProductTotalPrice);
 
-    orderDetailList.appendChild(orderDetailsProductItem);
+    $orderDetailList.appendChild(orderDetailsProductItem);
   });
 
   // Affiche le prix total de la commande
@@ -342,25 +347,55 @@ function displayOrder(order) {
   totalOrderPrice.classList.add('total-order-price');
   totalOrderPrice.textContent = `$${totalPrice.toFixed(2)}`;
 
-  newOrderBtn.addEventListener('click', () => {
-    orderModal.classList.add('hidden')
+  $confirmOrder.addEventListener('click', () => {
+    $orderModal.classList.remove('hidden')
+  })
+
+  $newOrderBtn.addEventListener('click', () => {
+    $orderModal.classList.add('hidden')
+    $emptyBasket.classList.remove("hidden")
+    $basketAside.classList.add('hidden')
     resetSlicePizza()
   })
 
   orderDetailTotalPrice.appendChild(totalOrderTitle);
   orderDetailTotalPrice.appendChild(totalOrderPrice);
 
-  orderDetailList.appendChild(orderDetailTotalPrice);
+  $orderDetailList.appendChild(orderDetailTotalPrice);
 }
 
-
-
-
 function resetSlicePizza() {
+  // pizzaCard.quantity = 0;
+  currentBasketNumber = 0;
   $basketProducts.textContent = "";
-  $totalOrderPrice.textContent = "0$";
+  $totalOrderPrice.textContent = "$0";
+  $basketNumber.textContent = "(0)";
+  // orders = [];
+
+  const allPizzaCards = document.querySelectorAll('.pizza-item');
+  allPizzaCards.forEach((card) => {
+    card.quantity = 0
+
+    const quantityBtn = card.querySelector('.quantity-btn');
+    if (quantityBtn) {
+      quantityBtn.remove();
+    } 
+
+    const addToCartBtn = card.querySelector('.add-to-cart-btn');
+    if (addToCartBtn) {
+      addToCartBtn.classList.remove('hidden');
+    } 
+
+    const quantitySpan = card.querySelector('.pizza-number-quantity');
+    if (quantitySpan) {
+      quantitySpan.textContent = "1";
+      quantitySpan.classList.add("hidden");
+    }
+  });
+
+  $basketAside.classList.add("hidden");
+  $emptyBasket.classList.remove("hidden");
 }
 
 getPizzaProduct();
-
 createPizzaOrder()
