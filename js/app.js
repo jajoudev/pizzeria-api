@@ -49,7 +49,7 @@ async function getPizzaProduct() {
       quantityBtn.classList.add("quantity-btn", 'active');
 
       const uuid = event.currentTarget.getAttribute("data-uuid");
-      console.log("UUID du produit cliqué :", uuid);
+      console.log("UUID du produit:", uuid);
 
 
       document.querySelectorAll('.quantity-btn.active').forEach((btn) => {
@@ -283,7 +283,7 @@ function addProductToBasket(productId, productName, productPrice, quantity, pizz
   currentBasketNumber++;
   $basketNumber.textContent = `(${currentBasketNumber})`;
 
-  console.log("Product added:", { uuid: productId, quantity: quantity })
+  console.log("Product ajouté:", { uuid: productId, quantity: quantity })
   orders.push({
     uuid: productId,
     quantity: pizzaCard.quantity
